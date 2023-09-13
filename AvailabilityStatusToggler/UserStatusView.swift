@@ -20,6 +20,9 @@ struct UserStatusView: View {
     
     //Matched Geometry
     @Namespace private var namespace
+    private var namespaceID: String = "card"
+    // Disable geometry when transition
+    @State var disableGeometryEffect: Bool = false
     
     init(showStatusSelection: Binding<Bool>, status: Binding<UserStatus>) {
         _showStatusSelection = showStatusSelection
@@ -42,12 +45,12 @@ extension UserStatusView {
     var Suggestionview: some View {
         ZStack(alignment: .bottom) {
             SuggestionView(isEnabled: enableSuggestionView) {
-               enableMeetingView(false)
+                enableSuggestionView(false)
             }
             BottomStatusView() //Bottom status view
-                .matchedGeometryEffect(id: "card", in: namespace)
+                .matchedGeometryEffect(id: namespaceID, in: namespace)
         }
-        .animation(.easeIn.speed(1), value: showStatusSelection)
+        .animation(.easeIn.speed(1.5), value: showStatusSelection)
     }
     
     func BottomStatusView() -> some View {
@@ -60,7 +63,7 @@ extension UserStatusView {
                     .padding(.leading, 8)
                 
                 UserStatusCardView(status: status)
-                    .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .offset(x: 0)), removal: .slide))
+                #warning("add the transition when changing the status for UserStatusCardView")
                 
                 Spacer()
                 Image(Images.toggleDown.rawValue)
@@ -69,6 +72,7 @@ extension UserStatusView {
                     .padding(.trailing, 5)
                     .onTapGesture {
                         toggleStatusView(enablePopup: true)
+                        disableGeometryEffect = false
                     }
             }
             .padding()
@@ -82,7 +86,6 @@ extension UserStatusView {
         .gesture(
             TapGesture(count: 2) // Detect double tap gesture
                 .onEnded {
-                    enableSuggestionView(false)
                     withAnimation(.easeInOut(duration: 0.3)) {
                         status.currentStatus = (status.currentStatus == .available) ? .unAvailable : .available
                     }
@@ -90,9 +93,7 @@ extension UserStatusView {
         )
         .onTapGesture(count: 1) { // Detect single tap gesture
             withAnimation(.default) {
-                toggleStatusView(enablePopup: true) // testing purpose only
-//                enableSuggestionView(true)
-                
+                enableSuggestionView(true)
             }
         }
         .padding(.bottom, 16)
@@ -117,17 +118,21 @@ extension UserStatusView {
                     switch action {
                     case .backButton:
                         enableMeetingView(false)
+                        disableGeometryEffect = false
                     case .doneButton:
                         updateCurrentStatus(status.selectedStatus)
                         toggleStatusView(enablePopup: false)
+                        disableGeometryEffect = true
                     }
                 })
-                    .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))
+                .matchedGeometryEffect(id: disableGeometryEffect ? namespaceID : "", in: namespace)
+                .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))
             } else {
                 TopStatusView()
-                    .matchedGeometryEffect(id: "card", in: namespace)
+                    .matchedGeometryEffect(id: namespaceID, in: namespace)
             }
         }
+        .animation(.easeOut.speed(1), value: enableMeetingView)
     }
     
     func TopStatusView() -> some View {
@@ -166,7 +171,7 @@ extension UserStatusView {
                     let filteredStatus = (statusType != .available && statusType != .unAvailable)
                     
                     if filteredStatus {
-                        var isSelected = (status.currentStatus == .unAvailable && statusType == .custom)
+                        let isSelected = (status.currentStatus == .unAvailable && statusType == .custom)
                         ? true
                         : isStatusSelected(statusType)
                         AvailabilityView(statusType: statusType, isSelected: isSelected) {
@@ -208,6 +213,7 @@ extension UserStatusView {
         withAnimation(.easeInOut) {
             if enable {
                 enableMeetingView(false)
+                enableSuggestionView(false)
             }
             showStatusSelection = enable
         }

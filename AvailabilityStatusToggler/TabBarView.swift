@@ -15,7 +15,7 @@ struct TabBarView: View {
             
         ZStack(alignment: .bottom) {
             TabView {
-                ListView(didEnableStatusView: $enableOverlay)
+                ListView(showStatusSelection: $enableOverlay)
                     .tabItem {
                         Label("Menu", systemImage: "list.dash")
                     }
@@ -46,15 +46,10 @@ struct TabbarOverlay: View {
     }
 }
 
-struct TabBarView_Previews: PreviewProvider {
-    static var previews: some View {
-        TabBarView()
-    }
-}
 
 struct ListView: View {
 
-    @Binding var didEnableStatusView: Bool
+    @Binding var showStatusSelection: Bool
     @State var status = UserStatus()
 
     var body: some View {
@@ -68,14 +63,12 @@ struct ListView: View {
                 }
             }
             .listStyle(.plain)
+            .onChange(of: status) { newValue in
+                debugPrint("newValue", newValue)
+//                status.resetStatusSelection()
+            }
             // Bottom Status Toggle View
-            StatusToggleView(isEnabled: $didEnableStatusView, status: $status)
+            UserStatusView(showStatusSelection: $showStatusSelection, status: $status)
         }
-    }
-}
-
-struct ListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListView(didEnableStatusView: .constant(true))
     }
 }

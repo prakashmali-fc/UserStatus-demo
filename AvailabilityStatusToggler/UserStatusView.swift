@@ -1,5 +1,5 @@
 //
-//  StatusToggleView.swift
+//  UserStatusView.swift
 //  AvailabilityStatusToggler
 //
 //  Created by Vikas on 13/06/23.
@@ -7,15 +7,13 @@
 
 import SwiftUI
 
-struct StatusToggleView: View {
+struct UserStatusView: View {
     
     // Properties
     @State var enableSuggestionView: Bool = false
     @State var enableMeetingView: Bool = false
     @State var inputTitle: String = ""
-
-    @Binding var isEnabled: Bool
-    
+    @Binding var showStatusSelection: Bool
     @Binding var status: UserStatus
     
     var allAvailabilityStatuses = UserStatusType.allCases
@@ -23,16 +21,14 @@ struct StatusToggleView: View {
     //Matched Geometry
     @Namespace private var namespace
     
-    init(
-        isEnabled: Binding<Bool>,
-        status: Binding<UserStatus>) {
-        _isEnabled = isEnabled
+    init(showStatusSelection: Binding<Bool>, status: Binding<UserStatus>) {
+        _showStatusSelection = showStatusSelection
         _status = status
     }
     
     var body: some View {
         ZStack {
-            if !isEnabled {
+            if !showStatusSelection {
                Suggestionview
             } else {
                 popUpView()
@@ -41,7 +37,7 @@ struct StatusToggleView: View {
     }
 }
 
-extension StatusToggleView {
+extension UserStatusView {
     
     var Suggestionview: some View {
         ZStack(alignment: .bottom) {
@@ -51,7 +47,7 @@ extension StatusToggleView {
             BottomStatusView() //Bottom status view
                 .matchedGeometryEffect(id: "card", in: namespace)
         }
-        .animation(.easeIn.speed(1), value: isEnabled)
+        .animation(.easeIn.speed(1), value: showStatusSelection)
     }
     
     func BottomStatusView() -> some View {
@@ -191,7 +187,7 @@ extension StatusToggleView {
 }
 
 // MARK: - Helper functions
-extension StatusToggleView {
+extension UserStatusView {
     func isStatusSelected(_ statusType: UserStatusType) -> Bool {
         status.currentStatus == statusType
     }
@@ -203,7 +199,6 @@ extension StatusToggleView {
     func updateCurrentStatus(_ statusType: UserStatusType?) {
         if let statusType {
             status.currentStatus = statusType
-            status.resetStatusSelection()
         } else {
             debugPrint("Update current status failed - Status is nil (Not updated)!!!!")
         }
@@ -214,7 +209,7 @@ extension StatusToggleView {
             if enable {
                 enableMeetingView(false)
             }
-            isEnabled = enable
+            showStatusSelection = enable
         }
     }
     

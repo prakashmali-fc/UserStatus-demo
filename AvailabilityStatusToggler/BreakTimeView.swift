@@ -35,9 +35,7 @@ struct BreakTimeView: View {
                 }
             }
             .onTapGesture {
-                withAnimation {
                     didSelectDuration()
-                }
             }
     }
 }

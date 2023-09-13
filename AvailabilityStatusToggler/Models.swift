@@ -156,32 +156,25 @@ enum Duration: String, Identifiable {
     static func getTitle(forDuration date: Date = Date(), for option: Duration) -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
-        
-        if isDurationValid(for: option) {
-            let calendar = Calendar.current
-            let durationToAdd = option.duration
-            switch option {
-            case ._1Day, ._2Days, ._1Week:
-                dateFormatter.dateFormat = "dd MMM h:mm a"
-            default: break
-            }
-            let modifiedDate = calendar.date(byAdding: .minute, value: durationToAdd, to: date)
-            if let modifiedDate {
-                let dateStr = dateFormatter.string(from: modifiedDate)
-                return "Not available until \(dateStr)"
-            }
+        let calendar = Calendar.current
+        let durationToAdd = option.duration
+        switch option {
+        case ._1Day, ._2Days, ._1Week:
+            dateFormatter.dateFormat = "MMM dd YYYY"
+        default: break
         }
-        return nil
-    }
-    
-    static func isDurationValid(for option: Duration) -> Bool{
-        let valid = option != .none && option != .untilFurtherNotice
-        return valid
+        let modifiedDate = calendar.date(byAdding: .minute, value: durationToAdd, to: date)
+        if let modifiedDate {
+            let dateStr = dateFormatter.string(from: modifiedDate)
+            return (option == .none || option == .untilFurtherNotice) ? "Not taking calls" : "Not available until \(dateStr)"
+        } else {
+           return nil
+        }
     }
 }
 
 
-struct UserStatus {
+struct UserStatus: Equatable {
     var currentStatus = UserStatusType.available
     var selectedStatus: UserStatusType? // for selecting purpose only
     var duration = Duration.untilFurtherNotice

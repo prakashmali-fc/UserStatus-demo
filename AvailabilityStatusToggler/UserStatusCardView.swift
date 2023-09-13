@@ -23,8 +23,8 @@ struct UserStatusCardView: View {
     
     func getText(with text: String, font: Font, foregroundColor: Color) -> some View{
         Text(text)
-            .font(.custom(AppFont.latoNormal.rawValue, size: 14).weight(.light)) // font weight 400
-            .foregroundColor(.subTitleColor)
+            .font(font) // font weight 400
+            .foregroundColor(foregroundColor)
     }
     
     func getStatusTitle() -> String {

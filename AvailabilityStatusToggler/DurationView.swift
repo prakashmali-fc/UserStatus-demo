@@ -34,9 +34,7 @@ struct DurationView: View {
                         }
                     case .backButton:
                         isEditable = false
-                        DispatchQueue.main.asyncAfter(deadline: .now()+0.35) {
-                            completion(.backButton)
-                        }
+                        completion(.backButton)
                     }
                 })
                 .padding(.bottom, 22)
@@ -79,10 +77,8 @@ struct DurationView: View {
                 
                 Button {
                     withAnimation {
-                        DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
-                            isEditable = false
-                            completion(.doneButton)
-                        }
+                        isEditable = false
+                        completion(.doneButton)
                     }
                 } label: {
                     Text("Done")

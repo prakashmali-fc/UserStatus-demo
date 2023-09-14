@@ -63,9 +63,6 @@ struct ListView: View {
                 }
             }
             .listStyle(.plain)
-            .onChange(of: status) { newValue in
-                debugPrint("newValue", newValue)
-            }
             // Bottom Status Toggle View
             UserStatusView(showStatusSelection: $showStatusSelection, status: $status)
         }

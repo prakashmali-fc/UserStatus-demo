@@ -114,7 +114,7 @@ extension UserStatusView {
                 .ignoresSafeArea()
             
             if enableMeetingView {
-                DurationView(statusInfo: $status, completion: { action  in
+                DurationView(status: $status, completion: { action  in
                     switch action {
                     case .backButton:
                         enableMeetingView(false)
@@ -205,6 +205,7 @@ extension UserStatusView {
     func updateCurrentStatus(_ statusType: UserStatusType?) {
         if let statusType {
             status.currentStatus = statusType
+            status.resetStatusSelection()
         } else {
             debugPrint("Update current status failed - Status is nil (Not updated)!!!!")
         }
@@ -215,6 +216,7 @@ extension UserStatusView {
             if enable {
                 enableMeetingView(false)
                 enableSuggestionView(false)
+                status.resetDurationSelection()
             }
             showStatusSelection = enable
         }

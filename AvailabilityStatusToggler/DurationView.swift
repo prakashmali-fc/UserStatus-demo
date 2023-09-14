@@ -15,18 +15,18 @@ struct DurationView: View {
     
     @State var selectedDate: Date = .now
     @State var isEditable: Bool = true
-    @Binding var statusInfo: UserStatus
+    @Binding var status: UserStatus
     var completion: ((_ action: MeetingViewAction) -> Void)
     
     private var showDatePicker: Bool {
-        statusInfo.duration == .custom
+        status.duration == .custom
     }
     
     var body: some View {
         
         ZStack {
             VStack(alignment: .leading) {
-                NavigationHeader(statusInfo: $statusInfo, isEditable: $isEditable, didTapBackButton: { action in
+                NavigationHeader(statusInfo: $status, isEditable: $isEditable, didTapBackButton: { action in
                     switch action {
                     case .beginEditing:
                         DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
@@ -52,11 +52,11 @@ struct DurationView: View {
                     .padding(.bottom, 16)
                 
                 VStack(spacing: 9) {
-                    if let status = statusInfo.selectedStatus  {
+                    if let status = status.selectedStatus  {
                         ForEach(status.options, id: \.self) { duration in
                             BreakTimeView(
                                 title: duration.title,
-                                isSelected: statusInfo.duration == duration,
+                                isSelected: self.status.duration == duration,
                                 didSelectDuration: {
                                     withAnimation {
                                         updateStatusDuration(duration)
@@ -113,6 +113,6 @@ struct DurationView: View {
 
 extension DurationView {
     func updateStatusDuration(_ duration: Duration) {
-        statusInfo.duration = duration
+        status.duration = duration
     }
 }

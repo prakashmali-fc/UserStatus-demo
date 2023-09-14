@@ -161,6 +161,7 @@ enum Duration: String, Identifiable {
         switch option {
         case ._1Day, ._2Days, ._1Week:
             dateFormatter.dateFormat = "MMM dd YYYY"
+            // For .custom, add a method to compare date with current date and if the difference is more than a day (24 hrs), change date format -> "MMM dd YYYY"
         default: break
         }
         let modifiedDate = calendar.date(byAdding: .minute, value: durationToAdd, to: date)
@@ -177,10 +178,14 @@ enum Duration: String, Identifiable {
 struct UserStatus: Equatable {
     var currentStatus = UserStatusType.available
     var selectedStatus: UserStatusType? // for selecting purpose only
-    var duration = Duration.untilFurtherNotice
+    var duration = Duration.untilFurtherNotice // default
     
     var customStatusTitle = ""
     var customDuration = Date()
+    
+    mutating func resetDurationSelection() {
+        duration = .untilFurtherNotice
+    }
     
     mutating func resetStatusSelection() {
         selectedStatus = nil

@@ -176,6 +176,7 @@ extension UserStatusView {
                         : isStatusSelected(statusType)
                         AvailabilityView(statusType: statusType, isSelected: isSelected) {
                             updateSelectedStatus(statusType)
+                            status.resetSelectedDuration()
                             enableMeetingView(true)
                         }
                     }

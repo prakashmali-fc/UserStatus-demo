@@ -50,7 +50,7 @@ extension UserStatusView {
             BottomStatusView() //Bottom status view
                 .matchedGeometryEffect(id: namespaceID, in: namespace)
         }
-        .animation(.easeIn.speed(1.5), value: showStatusSelection)
+        .animation(.easeIn.speed(1.5))
     }
     
     func BottomStatusView() -> some View {
@@ -62,8 +62,13 @@ extension UserStatusView {
                     .frame(width: 30, height: 35)
                     .padding(.leading, 8)
                 
-                UserStatusCardView(status: status)
-                #warning("add the transition when changing the status for UserStatusCardView")
+                if status.currentStatus == .available {
+                    UserStatusCardView(title: status.currentStatus.title, subTitle: status.currentStatus.subTitle)
+                        .transition(.opacity)
+                } else {
+                    UserStatusCardView(title: status.getStatusTitle(), subTitle: status.getStatusSubTitle())
+                        .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .offset(x: 0)), removal: .slide))
+                }
                 
                 Spacer()
                 Image(Images.toggleDown.rawValue)
@@ -86,7 +91,7 @@ extension UserStatusView {
         .gesture(
             TapGesture(count: 2) // Detect double tap gesture
                 .onEnded {
-                    withAnimation(.easeInOut(duration: 0.3)) {
+                    withAnimation {
                         updateCurrentStatus((status.currentStatus == .available) ? .unAvailable : .available)
                     }
                 }
@@ -188,7 +193,6 @@ extension UserStatusView {
         .cornerRadius(20)
         .padding(.horizontal, 25)
     }
-    
 }
 
 // MARK: - Helper functions

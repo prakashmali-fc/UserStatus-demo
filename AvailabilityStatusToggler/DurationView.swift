@@ -29,9 +29,7 @@ struct DurationView: View {
                 NavigationHeader(statusInfo: $status, isEditable: $isEditable, didTapBackButton: { action in
                     switch action {
                     case .beginEditing:
-                        DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
-                            updateStatusDuration(.none)
-                        }
+                        debugPrint("Editing started")
                     case .backButton:
                         isEditable = false
                         if status.duration == .custom {
@@ -85,6 +83,7 @@ struct DurationView: View {
                 .padding(.bottom, 15)
                 
                 Button {
+                    #warning("Validate the time for custom before we tap on done")
                     withAnimation {
                         isEditable = false
                         completion(.doneButton)

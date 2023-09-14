@@ -20,7 +20,7 @@ struct HeaderView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 30, height: 35)
             
-            UserStatusCardView(status: status)
+            UserStatusCardView(title: status.getStatusTitle(), subTitle: status.getStatusSubTitle())
                 .transition(.opacity)
             
             Spacer()

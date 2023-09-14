@@ -100,17 +100,79 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F14989A4-BEC0-4908-BDC7-D7DF272E927A"
+            uuid = "AF59DA7D-0B19-4B58-881F-5229B13C77B4"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AvailabilityStatusToggler/UserStatusView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "BottomStatusView()"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "popUpView()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AF59DA7D-0B19-4B58-881F-5229B13C77B4 - a1e7135ec29cfa66"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (AvailabilityStatusToggler.MeetingViewAction) -&gt; () in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.ignoresSafeArea(_: SwiftUI.SafeAreaRegions, edges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0, SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.transition(SwiftUI.AnyTransition) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.matchedGeometryEffect&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(id: &#x3c4;_1_0, in: SwiftUI.Namespace.ID, properties: SwiftUI.MatchedGeometryProperties, anchor: SwiftUI.UnitPoint, isSource: Swift.Bool) -&gt; some&gt;&gt;.0&gt;)&gt; in AvailabilityStatusToggler.UserStatusView.popUpView() -&gt; some"
+                  moduleName = "AvailabilityStatusToggler"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vikas/Desktop/ModulesH/UserStatus-demo/AvailabilityStatusToggler/UserStatusView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "312">
+               </Location>
+               <Location
+                  uuid = "AF59DA7D-0B19-4B58-881F-5229B13C77B4 - a1e7135ec29cfa66"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (AvailabilityStatusToggler.MeetingViewAction) -&gt; () in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.ignoresSafeArea(_: SwiftUI.SafeAreaRegions, edges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0, SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.transition(SwiftUI.AnyTransition) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.matchedGeometryEffect&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(id: &#x3c4;_1_0, in: SwiftUI.Namespace.ID, properties: SwiftUI.MatchedGeometryProperties, anchor: SwiftUI.UnitPoint, isSource: Swift.Bool) -&gt; some&gt;&gt;.0&gt;)&gt; in AvailabilityStatusToggler.UserStatusView.popUpView() -&gt; some"
+                  moduleName = "AvailabilityStatusToggler"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vikas/Desktop/ModulesH/UserStatus-demo/AvailabilityStatusToggler/UserStatusView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "324">
+               </Location>
+               <Location
+                  uuid = "AF59DA7D-0B19-4B58-881F-5229B13C77B4 - a1e7135ec29cfa66"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (AvailabilityStatusToggler.MeetingViewAction) -&gt; () in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.ignoresSafeArea(_: SwiftUI.SafeAreaRegions, edges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0, SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.transition(SwiftUI.AnyTransition) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.matchedGeometryEffect&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(id: &#x3c4;_1_0, in: SwiftUI.Namespace.ID, properties: SwiftUI.MatchedGeometryProperties, anchor: SwiftUI.UnitPoint, isSource: Swift.Bool) -&gt; some&gt;&gt;.0&gt;)&gt; in AvailabilityStatusToggler.UserStatusView.popUpView() -&gt; some"
+                  moduleName = "AvailabilityStatusToggler"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vikas/Desktop/ModulesH/UserStatus-demo/AvailabilityStatusToggler/UserStatusView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "316">
+               </Location>
+               <Location
+                  uuid = "AF59DA7D-0B19-4B58-881F-5229B13C77B4 - a1e7135ec29cfa45"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (AvailabilityStatusToggler.MeetingViewAction) -&gt; () in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.ignoresSafeArea(_: SwiftUI.SafeAreaRegions, edges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0, SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.transition(SwiftUI.AnyTransition) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.matchedGeometryEffect&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(id: &#x3c4;_1_0, in: SwiftUI.Namespace.ID, properties: SwiftUI.MatchedGeometryProperties, anchor: SwiftUI.UnitPoint, isSource: Swift.Bool) -&gt; some&gt;&gt;.0&gt;)&gt; in AvailabilityStatusToggler.UserStatusView.popUpView() -&gt; some"
+                  moduleName = "AvailabilityStatusToggler"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vikas/Desktop/ModulesH/UserStatus-demo/AvailabilityStatusToggler/UserStatusView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "128"
+                  endingLineNumber = "128"
+                  offsetFromSymbolStart = "296">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

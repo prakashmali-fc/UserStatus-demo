@@ -31,7 +31,6 @@ struct DurationView: View {
                     case .beginEditing:
                         debugPrint("Editing started")
                     case .backButton:
-                        isEditable = false
                         if status.duration == .custom {
                             status.resetDurationSelection()
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {

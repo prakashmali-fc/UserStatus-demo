@@ -13,7 +13,7 @@ struct UserStatusView: View {
     @State var enableSuggestionView: Bool = false
     @State var enableMeetingView: Bool = false
     @State var inputTitle: String = ""
-    @Binding var showStatusSelection: Bool
+    @Binding var showStatusSelectionView: Bool
     @Binding var status: UserStatus
     
     var allAvailabilityStatuses = UserStatusType.allCases
@@ -25,13 +25,13 @@ struct UserStatusView: View {
     @State var disableGeometryEffect: Bool = false
     
     init(showStatusSelection: Binding<Bool>, status: Binding<UserStatus>) {
-        _showStatusSelection = showStatusSelection
+        _showStatusSelectionView = showStatusSelection
         _status = status
     }
     
     var body: some View {
         ZStack {
-            if !showStatusSelection {
+            if !showStatusSelectionView {
                Suggestionview
             } else {
                 popUpView()
@@ -86,7 +86,6 @@ extension UserStatusView {
             .cornerRadius(20)
             .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 0)
             .padding(.horizontal)
-            
         }
         .gesture(
             TapGesture(count: 2) // Detect double tap gesture
@@ -135,9 +134,10 @@ extension UserStatusView {
             } else {
                 TopStatusView()
                     .matchedGeometryEffect(id: namespaceID, in: namespace)
+//                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
             }
         }
-        .animation(.easeOut.speed(1), value: enableMeetingView)
+        .animation(.easeOut.speed(1))
     }
     
     func TopStatusView() -> some View {
@@ -208,7 +208,9 @@ extension UserStatusView {
     func updateCurrentStatus(_ statusType: UserStatusType?) {
         if let statusType {
             status.currentStatus = statusType
-            status.resetStatusSelection()
+            DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+                status.resetStatusSelection()
+            }
         } else {
             debugPrint("Update current status failed - Status is nil (Not updated)!!!!")
         }
@@ -221,7 +223,7 @@ extension UserStatusView {
                 enableSuggestionView(false)
                 status.resetDurationSelection()
             }
-            showStatusSelection = enable
+            showStatusSelectionView = enable
         }
     }
     

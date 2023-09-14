@@ -27,15 +27,15 @@ struct BreakTimeView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .foregroundColor(isSelected ? .borderBlue : .black)
             .background(isSelected ? .white : Color.backgroundColor2)
-            .cornerRadius(8)
+            .cornerRadius(6)
             .overlay {
                 if isSelected {
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
                         .stroke(Color.borderBlue, lineWidth: 1.5)
                 }
             }
             .onTapGesture {
-                    didSelectDuration()
+                didSelectDuration()
             }
     }
 }

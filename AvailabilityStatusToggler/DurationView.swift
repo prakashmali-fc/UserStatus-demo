@@ -34,7 +34,14 @@ struct DurationView: View {
                         }
                     case .backButton:
                         isEditable = false
-                        completion(.backButton)
+                        if statusInfo.duration == .custom {
+                            statusInfo.resetSelectedDuration()
+                            DispatchQueue.main.asyncAfter(deadline: .now()+0.35) {
+                                completion(.backButton)
+                            }
+                        } else {
+                            completion(.backButton)
+                        }
                     }
                 })
                 .padding(.bottom, 22)
@@ -51,8 +58,10 @@ struct DurationView: View {
                                 title: duration.title,
                                 isSelected: statusInfo.duration == duration,
                                 didSelectDuration: {
-                                    updateStatusDuration(duration)
-                                    isEditable = false
+                                    withAnimation {
+                                        updateStatusDuration(duration)
+                                        isEditable = false
+                                    }
                                 }
                             )
                             .frame(height: 40)
@@ -73,7 +82,7 @@ struct DurationView: View {
                         }
                     }
                 }
-                .padding(.bottom, 25)
+                .padding(.bottom, 15)
                 
                 Button {
                     withAnimation {
@@ -89,7 +98,7 @@ struct DurationView: View {
                         .cornerRadius(6)
                 }
                 .buttonStyle(.plain)
-                .padding(.bottom, 24)
+                .padding(.bottom, 5)
                 
             }
             .frame(maxWidth: .infinity)

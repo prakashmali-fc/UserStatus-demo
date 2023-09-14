@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// MARK: - User availability status enum
 enum UserStatusType: String, CaseIterable, Identifiable {
     
     case available
@@ -159,7 +160,7 @@ enum Duration: String, Identifiable {
         let calendar = Calendar.current
         let durationToAdd = option.duration
         switch option {
-        case ._1Day, ._2Days, ._1Week:
+        case ._1Day, ._2Days, ._1Week, .custom:
             dateFormatter.dateFormat = "MMM dd YYYY"
             // For .custom, add a method to compare date with current date and if the difference is more than a day (24 hrs), change date format -> "MMM dd YYYY"
         default: break
@@ -174,7 +175,7 @@ enum Duration: String, Identifiable {
     }
 }
 
-
+// MARK: - User Status Model
 struct UserStatus: Equatable {
     var currentStatus = UserStatusType.available
     var selectedStatus: UserStatusType? // for selecting purpose only
@@ -190,5 +191,29 @@ struct UserStatus: Equatable {
     mutating func resetStatusSelection() {
         duration = currentStatus == .available ? .untilFurtherNotice : duration
         selectedStatus = nil
+    }
+    
+    func getStatusTitle() -> String {
+        switch currentStatus {
+        case .custom:
+            return customStatusTitle
+        default:
+            return currentStatus.title
+        }
+    }
+    
+    func getStatusSubTitle() -> String {
+        switch currentStatus {
+        case .available:
+            return currentStatus.subTitle
+        default:
+            if let subTitle = Duration.getTitle(
+                forDuration: duration == .custom ? customDuration : Date(),
+                for: duration
+            ) {
+                return subTitle
+            }
+            return duration.title
+        }
     }
 }

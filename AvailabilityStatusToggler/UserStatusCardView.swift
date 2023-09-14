@@ -10,13 +10,14 @@ import SwiftUI
 // Title & subtitle for the bottom status card
 struct UserStatusCardView: View {
     
-    let status: UserStatus
+    let title: String
+    let subTitle: String
 
     var body: some View {
         
         VStack(alignment: .leading, spacing: 4) {
-            getText(with: getStatusTitle(), font: .custom(AppFont.latoNormal.rawValue, size: 16).weight(.heavy), foregroundColor: .titleColor) // font weight 600
-            getText(with: getStatusSubTitle(), font: .custom(AppFont.latoNormal.rawValue, size: 14).weight(.light), foregroundColor: .subTitleColor)
+            getText(with: title, font: .custom(AppFont.latoNormal.rawValue, size: 16).weight(.heavy), foregroundColor: .titleColor) // font weight 600
+            getText(with: subTitle, font: .custom(AppFont.latoNormal.rawValue, size: 14).weight(.light), foregroundColor: .subTitleColor)
         }
         .padding(.leading, 5)
     }
@@ -25,30 +26,5 @@ struct UserStatusCardView: View {
         Text(text)
             .font(font) // font weight 400
             .foregroundColor(foregroundColor)
-    }
-    
-    func getStatusTitle() -> String {
-        switch status.currentStatus {
-        case .custom:
-            return status.customStatusTitle
-        default:
-            return status.currentStatus.title
-        }
-    }
-    
-    func getStatusSubTitle() -> String {
-        switch status.currentStatus {
-        case .available:
-            return status.currentStatus.subTitle
-        default:
-            let duration = status.duration
-            if let subTitle = Duration.getTitle(
-                forDuration: duration == .custom ? status.customDuration : Date(),
-                for: status.duration
-            ) {
-                return subTitle
-            }
-            return status.duration.title
-        }
     }
 }

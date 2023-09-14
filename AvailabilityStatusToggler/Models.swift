@@ -185,4 +185,8 @@ struct UserStatus: Equatable {
     mutating func resetStatusSelection() {
         selectedStatus = nil
     }
+    
+    mutating func resetSelectedDuration() {
+        duration = .untilFurtherNotice
+    }
 }

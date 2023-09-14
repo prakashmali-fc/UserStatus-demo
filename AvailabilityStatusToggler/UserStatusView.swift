@@ -91,13 +91,14 @@ extension UserStatusView {
             TapGesture(count: 2) // Detect double tap gesture
                 .onEnded {
                     withAnimation {
-                        updateCurrentStatus((status.currentStatus == .available) ? .unAvailable : .available)
+                        status.updateCurrentStatus((status.currentStatus == .available) ? .unAvailable : .available)
                     }
                 }
         )
         .onTapGesture(count: 1) { // Detect single tap gesture
             withAnimation(.default) {
-                enableSuggestionView(true)
+//                enableSuggestionView(true)
+                toggleStatusView(enablePopup: true)
             }
         }
         .padding(.bottom, 16)
@@ -120,13 +121,17 @@ extension UserStatusView {
             if enableMeetingView {
                 DurationView(status: $status, completion: { action  in
                     switch action {
-                    case .backButton:
+                    case .back:
                         enableMeetingView(false)
                         disableGeometryEffect = false
-                    case .doneButton:
-                        updateCurrentStatus(status.selectedStatus)
-                        toggleStatusView(enablePopup: false)
-                        disableGeometryEffect = true
+                    case .done:
+                        if isSelectedStatusValid() {
+                            status.updateCurrent(status: status.selectedStatus, duration: status.selectedDuration)
+                            toggleStatusView(enablePopup: false)
+                            disableGeometryEffect = true
+                        }else{
+                            
+                        }
                     }
                 })
                 .matchedGeometryEffect(id: disableGeometryEffect ? namespaceID : "", in: namespace)
@@ -153,7 +158,7 @@ extension UserStatusView {
             
             // MARK: - Availability view
             AvailabilityView(statusType: .available, isSelected: isStatusSelected(.available)) {
-                updateCurrentStatus(.available)
+                status.updateCurrentStatus(.available)
                 toggleStatusView(enablePopup: false)
             }
             
@@ -180,7 +185,7 @@ extension UserStatusView {
                         ? true
                         : isStatusSelected(statusType)
                         AvailabilityView(statusType: statusType, isSelected: isSelected) {
-                            updateSelectedStatus(statusType)
+                            status.updateSelectedStatus(statusType)
                             enableMeetingView(true)
                         }
                     }
@@ -200,22 +205,7 @@ extension UserStatusView {
     func isStatusSelected(_ statusType: UserStatusType) -> Bool {
         status.currentStatus == statusType
     }
-    
-    func updateSelectedStatus(_ statusType: UserStatusType) {
-        status.selectedStatus = statusType
-    }
-    
-    func updateCurrentStatus(_ statusType: UserStatusType?) {
-        if let statusType {
-            status.currentStatus = statusType
-            DispatchQueue.main.asyncAfter(deadline: .now()+2) {
-                status.resetStatusSelection()
-            }
-        } else {
-            debugPrint("Update current status failed - Status is nil (Not updated)!!!!")
-        }
-    }
-    
+
     func toggleStatusView(enablePopup enable: Bool) {
         withAnimation(.easeInOut) {
             if enable {
@@ -235,5 +225,10 @@ extension UserStatusView {
         withAnimation {
             enableSuggestionView = enable
         }
+    }
+    
+    func isSelectedStatusValid() -> Bool {
+        let valid = status.selectedStatus == .custom && !status.customStatusTitle.isEmpty
+        return valid
     }
 }

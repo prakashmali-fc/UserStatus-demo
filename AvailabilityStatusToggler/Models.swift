@@ -160,7 +160,7 @@ enum Duration: String, Identifiable {
         let calendar = Calendar.current
         let durationToAdd = option.duration
         switch option {
-        case ._1Day, ._2Days, ._1Week, .custom:
+        case ._1Day, ._2Days, ._1Week:
             dateFormatter.dateFormat = "MMM dd YYYY"
             // For .custom, add a method to compare date with current date and if the difference is more than a day (24 hrs), change date format -> "MMM dd YYYY"
         default: break
@@ -177,19 +177,57 @@ enum Duration: String, Identifiable {
 
 // MARK: - User Status Model
 struct UserStatus: Equatable {
+    // default
     var currentStatus = UserStatusType.available
-    var selectedStatus: UserStatusType? // for selecting purpose only
-    var duration = Duration.untilFurtherNotice // default
+    var currentDuration = Duration.untilFurtherNotice
+    
+    // for selecting purpose only
+    var selectedStatus: UserStatusType?
+    var selectedDuration: Duration?
     
     var customStatusTitle = ""
     var customDuration = Date()
     
+    
+    mutating func updateCurrent(status: UserStatusType?, duration: Duration? ) {
+        updateCurrentStatus(status ?? currentStatus)
+        updateCurrentStatusDuration(duration ?? currentDuration)
+    }
+    
+    mutating func updateCurrentStatus(_ statusType: UserStatusType?) {
+        if let statusType {
+            currentStatus = statusType
+            resetStatusSelection()
+        } else {
+            debugPrint("Update current status failed - Status is nil (Not updated)!!!!")
+        }
+    }
+    
+    mutating func updateCurrentStatusDuration(_ duration: Duration?) {
+        if let duration {
+            currentDuration = duration
+        } else {
+            debugPrint("Update current status duration failed - duration is nil (Not updated)!!!!")
+        }
+    }
+    
+    mutating func updateSelectedStatus(_ statusType: UserStatusType) {
+        if selectedStatus == nil {
+            selectedDuration = .untilFurtherNotice
+        }
+        selectedStatus = statusType
+    }
+    
+    mutating func updateSelectedStatusDuration(_ duration: Duration) {
+        selectedDuration = duration
+    }
+
     mutating func resetDurationSelection() {
-        duration = .untilFurtherNotice
+        selectedDuration = nil
     }
     
     mutating func resetStatusSelection() {
-        duration = currentStatus == .available ? .untilFurtherNotice : duration
+        currentDuration = currentStatus == .available ? .untilFurtherNotice : currentDuration
         selectedStatus = nil
     }
     
@@ -208,12 +246,12 @@ struct UserStatus: Equatable {
             return currentStatus.subTitle
         default:
             if let subTitle = Duration.getTitle(
-                forDuration: duration == .custom ? customDuration : Date(),
-                for: duration
+                forDuration: selectedDuration == .custom ? customDuration : Date(),
+                for: currentDuration
             ) {
                 return subTitle
             }
-            return duration.title
+            return currentDuration.title
         }
     }
 }

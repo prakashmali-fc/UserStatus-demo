@@ -7,38 +7,35 @@
 
 import SwiftUI
 
-enum MeetingViewAction {
-    case backButton, doneButton
-}
+enum DurationViewDismissAction { case back, done }
 
 struct DurationView: View {
     
     @State var selectedDate: Date = .now
-    @State var isEditable: Bool = true
+    @State var isCustomStatusTitleInvalid: Bool = false
     @Binding var status: UserStatus
-    var completion: ((_ action: MeetingViewAction) -> Void)
+    var completion: ((_ action: DurationViewDismissAction) -> Void)
     
     private var showDatePicker: Bool {
-        status.duration == .custom
+        status.selectedDuration == .custom
     }
     
     var body: some View {
         
         ZStack {
             VStack(alignment: .leading) {
-                NavigationHeader(statusInfo: $status, isEditable: $isEditable, didTapBackButton: { action in
+                NavigationHeader(status: $status, showError: $isCustomStatusTitleInvalid, didTapBackButton: { action in
                     switch action {
-                    case .beginEditing:
-                        debugPrint("Editing started")
                     case .backButton:
-                        if status.duration == .custom {
+                        if status.selectedDuration == .custom {
                             status.resetDurationSelection()
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                                completion(.backButton)
+                                completion(.back)
                             }
                         } else {
-                            completion(.backButton)
+                            completion(.back)
                         }
+                    default: break
                     }
                 })
                 .padding(.bottom, 22)
@@ -53,11 +50,10 @@ struct DurationView: View {
                         ForEach(status.options, id: \.self) { duration in
                             BreakTimeView(
                                 title: duration.title,
-                                isSelected: self.status.duration == duration,
+                                isSelected: self.status.selectedDuration == duration,
                                 didSelectDuration: {
                                     withAnimation {
-                                        updateStatusDuration(duration)
-                                        isEditable = false
+                                        self.status.updateSelectedStatusDuration(duration)
                                     }
                                 }
                             )
@@ -73,9 +69,6 @@ struct DurationView: View {
                             .frame(minWidth: 290)
                             .clipped()
                             .padding(.top, 25)
-                            .onAppear {
-                                isEditable = false
-                            }
                         }
                     }
                 }
@@ -84,8 +77,11 @@ struct DurationView: View {
                 Button {
                     #warning("Validate the time for custom before we tap on done")
                     withAnimation {
-                        isEditable = false
-                        completion(.doneButton)
+                        if status.selectedStatus == .custom && !(status.customStatusTitle.isEmpty) {
+                            completion(.done)
+                        } else {
+                            isCustomStatusTitleInvalid = true
+                        }
                     }
                 } label: {
                     Text("Done")
@@ -104,13 +100,18 @@ struct DurationView: View {
             .background(Color.white)
             .cornerRadius(20)
             .padding(.horizontal, 25)
-            .animation(.easeInOut.speed(1), value: isEditable)
+            .animation(.easeInOut.speed(1))
         }
     }
 }
 
-extension DurationView {
-    func updateStatusDuration(_ duration: Duration) {
-        status.duration = duration
-    }
-}
+
+//extension DurationView {
+//    func isDurationValid() {
+//        switch status.selectedDuration {
+//
+//        case .custom:
+//            debugPrint("custom duration selected")
+//        }
+//    }
+//}

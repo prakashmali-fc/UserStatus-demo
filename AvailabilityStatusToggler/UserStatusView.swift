@@ -87,7 +87,7 @@ extension UserStatusView {
             TapGesture(count: 2) // Detect double tap gesture
                 .onEnded {
                     withAnimation(.easeInOut(duration: 0.3)) {
-                        status.currentStatus = (status.currentStatus == .available) ? .unAvailable : .available
+                        updateCurrentStatus((status.currentStatus == .available) ? .unAvailable : .available)
                     }
                 }
         )
@@ -176,7 +176,6 @@ extension UserStatusView {
                         : isStatusSelected(statusType)
                         AvailabilityView(statusType: statusType, isSelected: isSelected) {
                             updateSelectedStatus(statusType)
-                            status.resetSelectedDuration()
                             enableMeetingView(true)
                         }
                     }

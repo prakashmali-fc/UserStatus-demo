@@ -34,9 +34,9 @@ struct DurationView: View {
                         }
                     case .backButton:
                         isEditable = false
-                        if statusInfo.duration == .custom {
-                            statusInfo.resetSelectedDuration()
-                            DispatchQueue.main.asyncAfter(deadline: .now()+0.35) {
+                        if status.duration == .custom {
+                            status.resetDurationSelection()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                                 completion(.backButton)
                             }
                         } else {

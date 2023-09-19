@@ -30,11 +30,13 @@ struct UserStatusView: View {
     }
     
     var body: some View {
-        if !showStatusSelectionView {
-            Suggestionview
-        } else {
-            popUpView()
-        }// else end
+        ZStack {
+            if !showStatusSelectionView {
+               Suggestionview
+            } else {
+                popUpView()
+            }// else end
+        }// ZStack
     }
 }
 

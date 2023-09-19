@@ -59,8 +59,7 @@ struct NavigationHeader: View {
     }
     
     func handleKeyboard(_ tf: UITextField) {
-        let delay = enableKeyboard ? 0 : 0.25
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             if enableKeyboard && !showError {
                 tf.becomeFirstResponder()
             } else {

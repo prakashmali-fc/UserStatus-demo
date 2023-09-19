@@ -30,13 +30,11 @@ struct UserStatusView: View {
     }
     
     var body: some View {
-        ZStack {
-            if !showStatusSelectionView {
-               Suggestionview
-            } else {
-                popUpView()
-            }// else end
-        }// ZStack
+        if !showStatusSelectionView {
+            Suggestionview
+        } else {
+            popUpView()
+        }// else end
     }
 }
 
@@ -78,6 +76,7 @@ extension UserStatusView {
                     .onTapGesture {
                         toggleStatusView(enablePopup: true)
                         disableGeometryEffect = false
+                        status.resetStatusSelection()
                     }
             }
             .padding()
@@ -91,14 +90,14 @@ extension UserStatusView {
             TapGesture(count: 2) // Detect double tap gesture
                 .onEnded {
                     withAnimation {
+                        status.resetStatusSelection()
                         status.updateCurrentStatus((status.currentStatus == .available) ? .unAvailable : .available)
                     }
                 }
         )
         .onTapGesture(count: 1) { // Detect single tap gesture
             withAnimation(.default) {
-//                enableSuggestionView(true)
-                toggleStatusView(enablePopup: true)
+                enableSuggestionView(true)
             }
         }
         .padding(.bottom, 16)
@@ -125,13 +124,9 @@ extension UserStatusView {
                         enableMeetingView(false)
                         disableGeometryEffect = false
                     case .done:
-                        if isSelectedStatusValid() {
-                            status.updateCurrent(status: status.selectedStatus, duration: status.selectedDuration)
-                            toggleStatusView(enablePopup: false)
-                            disableGeometryEffect = true
-                        }else{
-                            
-                        }
+                        status.updateCurrent(status: status.selectedStatus, duration: status.selectedDuration)
+                        toggleStatusView(enablePopup: false)
+                        disableGeometryEffect = true
                     }
                 })
                 .matchedGeometryEffect(id: disableGeometryEffect ? namespaceID : "", in: namespace)
@@ -139,7 +134,7 @@ extension UserStatusView {
             } else {
                 TopStatusView()
                     .matchedGeometryEffect(id: namespaceID, in: namespace)
-//                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
+                    .transition(.asymmetric(insertion: .scale(scale: 0.5).combined(with: .move(edge: .leading)), removal: .scale(scale: 0.5).combined(with: .move(edge: .leading))))
             }
         }
         .animation(.easeOut.speed(1))

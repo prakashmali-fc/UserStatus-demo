@@ -75,9 +75,8 @@ struct DurationView: View {
                 .padding(.bottom, 15)
                 
                 Button {
-                    #warning("Validate the time for custom before we tap on done")
                     withAnimation {
-                        if status.selectedStatus == .custom && !(status.customStatusTitle.isEmpty) {
+                        if status.selectedStatus != .custom || !status.customStatusTitle.isEmpty {
                             completion(.done)
                         } else {
                             isCustomStatusTitleInvalid = true
@@ -95,7 +94,6 @@ struct DurationView: View {
                 .padding(.bottom, 5)
                 
             }
-            .frame(maxWidth: .infinity)
             .padding(.all, 24)
             .background(Color.white)
             .cornerRadius(20)

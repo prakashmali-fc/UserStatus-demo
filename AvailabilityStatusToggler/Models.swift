@@ -197,7 +197,6 @@ struct UserStatus: Equatable {
     mutating func updateCurrentStatus(_ statusType: UserStatusType?) {
         if let statusType {
             currentStatus = statusType
-            resetStatusSelection()
         } else {
             debugPrint("Update current status failed - Status is nil (Not updated)!!!!")
         }

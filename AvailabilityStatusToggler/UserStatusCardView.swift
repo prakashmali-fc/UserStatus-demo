@@ -1,6 +1,5 @@
 //
-//  File.swift
-//  AvailabilityStatusToggler
+//  UserStatusCardView.swift
 //
 //  Created by Prakash on 13/09/23.
 //
@@ -16,15 +15,25 @@ struct UserStatusCardView: View {
     var body: some View {
         
         VStack(alignment: .leading, spacing: 4) {
-            getText(with: title, font: .custom(AppFont.latoNormal.rawValue, size: 16).weight(.heavy), foregroundColor: .titleColor) // font weight 600
-            getText(with: subTitle, font: .custom(AppFont.latoNormal.rawValue, size: 14).weight(.light), foregroundColor: .subTitleColor)
+            userStatusCard(
+                with: title,
+                font: .custom(AppFont.latoNormal.rawValue,
+                size: 16).weight(.heavy),
+                foregroundColor: .titleColor
+            )
+            userStatusCard(
+                with: subTitle,
+                font: .custom(AppFont.latoNormal.rawValue,
+                size: 14).weight(.light),
+                foregroundColor: .subTitleColor
+            )
         }
         .padding(.leading, 5)
     }
     
-    func getText(with text: String, font: Font, foregroundColor: Color) -> some View{
+    func userStatusCard(with text: String, font: Font, foregroundColor: Color) -> some View {
         Text(text)
-            .font(font) // font weight 400
+            .font(font)
             .foregroundColor(foregroundColor)
     }
 }

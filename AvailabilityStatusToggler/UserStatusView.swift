@@ -1,6 +1,5 @@
 //
 //  UserStatusView.swift
-//  AvailabilityStatusToggler
 //
 //  Created by Vikas on 13/06/23.
 //
@@ -13,19 +12,18 @@ struct UserStatusView: View {
     @State var enableSuggestionView: Bool = false
     @State var enableMeetingView: Bool = false
     @State var inputTitle: String = ""
-    @Binding var showStatusSelectionView: Bool
+    @State var showStatusSelectionView: Bool = false
     @Binding var status: UserStatus
     
     var allAvailabilityStatuses = UserStatusType.allCases
     
-    //Matched Geometry
+    // Matched Geometry
     @Namespace private var namespace
     private var namespaceID: String = "card"
     // Disable geometry when transition
     @State var disableGeometryEffect: Bool = false
     
-    init(showStatusSelection: Binding<Bool>, status: Binding<UserStatus>) {
-        _showStatusSelectionView = showStatusSelection
+    init(status: Binding<UserStatus>) {
         _status = status
     }
     
@@ -35,8 +33,8 @@ struct UserStatusView: View {
                Suggestionview
             } else {
                 popUpView()
-            }// else end
-        }// ZStack
+            }
+        }
     }
 }
 
@@ -47,10 +45,9 @@ extension UserStatusView {
             SuggestionView(isEnabled: enableSuggestionView) {
                 enableSuggestionView(false)
             }
-            BottomStatusView() //Bottom status view
+            BottomStatusView()
                 .matchedGeometryEffect(id: namespaceID, in: namespace)
         }
-        .animation(.easeIn.speed(1.5))
     }
     
     func BottomStatusView() -> some View {
@@ -91,7 +88,7 @@ extension UserStatusView {
         .gesture(
             TapGesture(count: 2) // Detect double tap gesture
                 .onEnded {
-                    withAnimation {
+                    withAnimation(.easeInOut.speed(1.5)) {
                         status.resetStatusSelection()
                         status.updateCurrentStatus((status.currentStatus == .available) ? .unAvailable : .available)
                     }
@@ -103,12 +100,15 @@ extension UserStatusView {
             }
         }
         .padding(.bottom, 16)
-        .overlay {
-            if enableSuggestionView {
-                CircularRadius(color: .gradientOrange)
-                    .frame(width: 50, height: 50, alignment: .leading)
-                    .offset(x: -51, y: -10)
-            }
+        .overlay(circularOverlay())
+    }
+    
+    @ViewBuilder
+    func circularOverlay() -> some View {
+        if enableSuggestionView {
+            CircularRadius(color: .gradientOrange)
+                .frame(width: 50, height: 50, alignment: .leading)
+                .offset(x: -51, y: -10)
         }
     }
     
@@ -118,17 +118,26 @@ extension UserStatusView {
 
             Color.gray.opacity(0.3)
                 .ignoresSafeArea()
-            
+
             if enableMeetingView {
                 DurationView(status: $status, completion: { action  in
                     switch action {
                     case .back:
-                        enableMeetingView(false)
-                        disableGeometryEffect = false
+                        if status.selectedStatus == .custom {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                enableMeetingView(false)
+                                disableGeometryEffect = false
+                            }
+                        } else {
+                            enableMeetingView(false)
+                            disableGeometryEffect = false
+                        }
                     case .done:
-                        status.updateCurrent(status: status.selectedStatus, duration: status.selectedDuration)
-                        toggleStatusView(enablePopup: false)
-                        disableGeometryEffect = true
+                        withAnimation(.easeInOut.speed(1.5)) {
+                            disableGeometryEffect = true
+                            status.updateCurrent(status: status.selectedStatus, duration: status.selectedDuration)
+                            toggleStatusView(enablePopup: false)
+                        }
                     }
                 })
                 .matchedGeometryEffect(id: disableGeometryEffect ? namespaceID : "", in: namespace)
@@ -136,10 +145,13 @@ extension UserStatusView {
             } else {
                 TopStatusView()
                     .matchedGeometryEffect(id: namespaceID, in: namespace)
-                    .transition(.asymmetric(insertion: .scale(scale: 0.5).combined(with: .move(edge: .leading)), removal: .scale(scale: 0.5).combined(with: .move(edge: .leading))))
+                    .transition(
+                        .asymmetric(insertion: .scale(scale: 0.5).combined(with: .move(edge: .leading)),
+                        removal: .scale(scale: 0.5).combined(with: .move(edge: .leading)))
+                    )
             }
         }
-        .animation(.easeOut.speed(1))
+        .animation(.easeInOut.speed(1), value: enableMeetingView)
     }
     
     func TopStatusView() -> some View {
@@ -151,7 +163,6 @@ extension UserStatusView {
                 toggleStatusView(enablePopup: false)
             }
             .padding(.bottom, 34)
-            
             
             // MARK: - Availability view
             AvailabilityView(statusType: .available, isSelected: isStatusSelected(.available)) {
@@ -169,8 +180,7 @@ extension UserStatusView {
             .padding(.top, 25)
             .padding(.bottom, 15)
             
-            
-            //MARK: - Status views types
+            // MARK: - Status views types
             VStack(spacing: 10) {
                 
                 ForEach(allAvailabilityStatuses, id: \.id) { statusType in
@@ -191,7 +201,7 @@ extension UserStatusView {
         }
         .padding([.top, .horizontal], 23)
         .padding(.bottom, 39)
-        .background(Color.white.animation(.easeInOut))
+        .background(Color.white)
         .cornerRadius(20)
         .padding(.horizontal, 25)
     }
@@ -199,6 +209,7 @@ extension UserStatusView {
 
 // MARK: - Helper functions
 extension UserStatusView {
+    
     func isStatusSelected(_ statusType: UserStatusType) -> Bool {
         status.currentStatus == statusType
     }

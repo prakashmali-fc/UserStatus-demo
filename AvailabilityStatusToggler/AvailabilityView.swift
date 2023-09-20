@@ -9,7 +9,7 @@ import SwiftUI
 
 // Main Availablity view status type
 struct AvailabilityView: View {
-
+    
     let statusType: UserStatusType
     var isSelected: Bool
     var didSelectStatus: (() -> Void)
@@ -21,27 +21,21 @@ struct AvailabilityView: View {
     }
     
     var body: some View {
-        HStack(alignment: .topAlignment, spacing: statusType.subTitle.isEmpty ? 14 : 12) {
+        HStack(alignment: .top, spacing: statusType.subTitle.isEmpty ? 14 : 12) {
             
             BulletPoint(color: statusType.color)
-                .alignmentGuide(.topAlignment) { context in
-                    context[.firstTextBaseline]
-                }
+                .offset(y: 4)
             
             VStack(alignment: .leading, spacing: 6) {
                 Text(statusType.title)
                     .font(.custom(AppFont.latoNormal.rawValue, size: 16).weight(.semibold))
                     .foregroundColor(.availabilityTitle)
-                    .alignmentGuide(.topAlignment) { context in
-                        context[.firstTextBaseline]
-                    }
                 
                 if statusType == .available { // show subtitle only for available
                     Text(statusType.subTitle)
-                            .font(.custom(AppFont.latoNormal.rawValue, size: 15).weight(.medium))
-                            .foregroundColor(.availabilitysubTitle)
+                        .font(.custom(AppFont.latoNormal.rawValue, size: 15).weight(.medium))
+                        .foregroundColor(.availabilitysubTitle)
                 }
-                
             }
             Spacer()
         }
@@ -51,9 +45,12 @@ struct AvailabilityView: View {
         .onTapGesture {
             didSelectStatus()
         }
-        .overlay {
+        .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(isSelected ? statusType.color : .clear, lineWidth: !statusType.subTitle.isEmpty ? 1.5 : 1.0)
-        }
+                .stroke(
+                    isSelected ? statusType.color : .clear,
+                    lineWidth: !statusType.subTitle.isEmpty ? 1.5 : 1.0
+                )
+        )
     }
 }

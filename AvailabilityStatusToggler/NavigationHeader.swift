@@ -1,8 +1,7 @@
 //
 //  NavigationHeader.swift
-//  AvailabilityStatusToggler
 //
-//  Created by Prakash on 13/09/23.
+//  Created by Vikas on 13/06/23.
 //
 
 import SwiftUI
@@ -37,18 +36,20 @@ struct NavigationHeader: View {
                 .padding(.trailing, 10)
                 .onTapGesture {
                     withAnimation {
+                        showError = true
                         didTapBackButton(.backButton)
                     }
                 }
             BulletPoint(color: .red)
                 .padding(.trailing, 5)
             
-            if let status = status.selectedStatus, status != .custom{
+            if let status = status.selectedStatus, status != .custom {
                 Text(status.navTitle)
                     .frame(height: 22)
             } else {
-                TextField("", text: $status.customStatusTitle, prompt: placeHolder)
+                TextField("", text: $status.customStatusTitle)
                     .introspectTextField(customize: handleKeyboard(_:))
+                    .background(placeHolder.frame(maxWidth: .infinity, alignment: .leading))
                     .font(.system(size: 18))
                     .onTapGesture {
                         showError = false
@@ -59,12 +60,12 @@ struct NavigationHeader: View {
     }
     
     func handleKeyboard(_ tf: UITextField) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            if enableKeyboard && !showError {
+        if enableKeyboard && !showError {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                 tf.becomeFirstResponder()
-            } else {
-                tf.resignFirstResponder()
             }
+        } else {
+            tf.resignFirstResponder()
         }
     }
 }

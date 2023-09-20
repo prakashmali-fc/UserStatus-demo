@@ -1,8 +1,7 @@
 //
 //  HeaderView.swift
-//  AvailabilityStatusToggler
 //
-//  Created by Prakash on 13/09/23.
+//  Created by Vikas on 13/06/23.
 //
 
 import SwiftUI

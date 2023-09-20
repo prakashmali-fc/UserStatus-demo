@@ -1,6 +1,5 @@
 //
 //  SuggestionView.swift
-//  AvailabilityStatusToggler
 //
 //  Created by Vikas on 13/06/23.
 //
@@ -18,7 +17,7 @@ struct SuggestionView: View {
             VStack {
                 Spacer()
                 closeButton()
-                HStack(alignment: .center ,spacing: 10) {
+                HStack(alignment: .center, spacing: 10) {
                     
                     BulletPoint(color: .gradientOrange)
                     
@@ -51,15 +50,7 @@ struct SuggestionView: View {
         .padding(.trailing, 20)
         .padding(.bottom, 30)
     }
-    
 }
-
-//struct SuggestionView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SuggestionView(circleColor: .gradientOrange, inputText: "This is the sample text we can provide as of now!!")
-//            .background(Color.black.opacity(0.4))
-//    }
-//}
 
 // Bullet point for the text
 struct BulletPoint: View {
@@ -81,6 +72,7 @@ struct BulletPoint_Previews: PreviewProvider {
 
 // Cirular Raidus over Bottom Card Text
 struct CircularRadius: View {
+    
     var color: Color
     var body: some View {
         Circle()
@@ -109,7 +101,7 @@ struct CircularRadius_Previews: PreviewProvider {
 struct SendButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
-        HStack(alignment: .center ,spacing: 5) {
+        HStack(alignment: .center, spacing: 5) {
             Image(Images.close.rawValue)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -118,11 +110,10 @@ struct SendButtonStyle: ButtonStyle {
             configuration.label
                 .font(.custom(AppFont.latoNormal.rawValue, size: 12).weight(.medium))
                 .foregroundColor(.closeButtonColor)
-                
         }
         .padding(.horizontal, 6)
-        .padding([.top,.bottom], 4)
-        .background(.white)
+        .padding([.top, .bottom], 4)
+        .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .shadow(radius: 2)
     }

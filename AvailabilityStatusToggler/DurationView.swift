@@ -1,8 +1,7 @@
 //
 //  DurationView.swift
-//  Popupnavigation
 //
-//  Created by Vikas on 18/05/23.
+//  Created by Vikas on 13/06/23.
 //
 
 import SwiftUI
@@ -10,22 +9,22 @@ import SwiftUI
 enum DurationViewDismissAction { case back, done }
 
 struct DurationView: View {
-    
-    @State var selectedDate: Date = .now
+
+    @State var selectedDate: Date = Date()
     @State var isCustomStatusTitleInvalid: Bool = false
     @Binding var status: UserStatus
     var completion: ((_ action: DurationViewDismissAction) -> Void)
-    
+
     private var showDatePicker: Bool {
         status.selectedDuration == .custom
     }
-    
+
     var body: some View {
-        
+
         ZStack {
             VStack(alignment: .leading) {
-                NavigationHeader(status: $status, showError: $isCustomStatusTitleInvalid, didTapBackButton: { action in
-                    switch action {
+                NavigationHeader(status: $status, showError: $isCustomStatusTitleInvalid) { action in
+                   switch action {
                     case .backButton:
                         if status.selectedDuration == .custom {
                             status.resetDurationSelection()
@@ -37,16 +36,16 @@ struct DurationView: View {
                         }
                     default: break
                     }
-                })
+                }
                 .padding(.bottom, 22)
-                
+
                 Text("Not taking calls until")
                     .font(.custom(AppFont.latoNormal.rawValue, size: 15).weight(.medium))
                     .foregroundColor(.availabilitysubTitle)
                     .padding(.bottom, 16)
-                
+
                 VStack(spacing: 9) {
-                    if let status = status.selectedStatus  {
+                    if let status = status.selectedStatus {
                         ForEach(status.options, id: \.self) { duration in
                             BreakTimeView(
                                 title: duration.title,
@@ -61,9 +60,7 @@ struct DurationView: View {
                         }
                         
                         if showDatePicker {
-                            DatePicker(selection: $selectedDate) {
-                                
-                            }
+                            DatePicker(selection: $selectedDate) { }
                             .datePickerStyle(.wheel)
                             .frame(height: 110)
                             .frame(minWidth: 290)
@@ -75,12 +72,10 @@ struct DurationView: View {
                 .padding(.bottom, 15)
                 
                 Button {
-                    withAnimation {
-                        if status.selectedStatus != .custom || !status.customStatusTitle.isEmpty {
-                            completion(.done)
-                        } else {
-                            isCustomStatusTitleInvalid = true
-                        }
+                    if status.selectedStatus != .custom || !status.customStatusTitle.isEmpty {
+                        completion(.done)
+                    } else {
+                        isCustomStatusTitleInvalid = true
                     }
                 } label: {
                     Text("Done")
@@ -92,7 +87,6 @@ struct DurationView: View {
                 }
                 .buttonStyle(.plain)
                 .padding(.bottom, 5)
-                
             }
             .padding(.all, 24)
             .background(Color.white)
@@ -102,14 +96,3 @@ struct DurationView: View {
         }
     }
 }
-
-
-//extension DurationView {
-//    func isDurationValid() {
-//        switch status.selectedDuration {
-//
-//        case .custom:
-//            debugPrint("custom duration selected")
-//        }
-//    }
-//}

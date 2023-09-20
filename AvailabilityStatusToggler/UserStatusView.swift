@@ -124,7 +124,7 @@ extension UserStatusView {
                     switch action {
                     case .back:
                         if status.selectedStatus == .custom {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                 enableMeetingView(false)
                                 disableGeometryEffect = false
                             }

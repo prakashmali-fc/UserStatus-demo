@@ -15,13 +15,13 @@ struct UserStatusCardView: View {
     var body: some View {
         
         VStack(alignment: .leading, spacing: 4) {
-            userStatusCard(
+            getText(
                 with: title,
                 font: .custom(AppFont.latoNormal.rawValue,
                 size: 16).weight(.heavy),
                 foregroundColor: .titleColor
             )
-            userStatusCard(
+            getText(
                 with: subTitle,
                 font: .custom(AppFont.latoNormal.rawValue,
                 size: 14).weight(.light),
@@ -29,11 +29,5 @@ struct UserStatusCardView: View {
             )
         }
         .padding(.leading, 5)
-    }
-    
-    func userStatusCard(with text: String, font: Font, foregroundColor: Color) -> some View {
-        Text(text)
-            .font(font)
-            .foregroundColor(foregroundColor)
     }
 }

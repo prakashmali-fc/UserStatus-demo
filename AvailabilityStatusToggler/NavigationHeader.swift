@@ -65,7 +65,9 @@ struct NavigationHeader: View {
                 tf.becomeFirstResponder()
             }
         } else {
-            tf.resignFirstResponder()
+            DispatchQueue.main.async {
+                tf.resignFirstResponder()
+            }
         }
     }
 }
